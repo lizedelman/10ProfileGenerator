@@ -1,39 +1,43 @@
+const generateHTML = require('./src/generateHTML');
+
 const inquirer = require("inquirer");
 const fs = require("fs");
-const 
 
-const questions = [
-  {
-    type: "input",
-    message: "What is your project name?",
-    name: "title",
-  },
-  {
-    type: "input",
-    message: "Write a short description of the project.",
-    name: "description",
-  },
-  {
-    type: "input",
-    message: "What would you like to include under the usage section?",
-    name: "usage",
-  },
-  {
-    type: "input",
-    message: "What would you like to include under the installation section?",
-    name: "installation",
-  },
-  {
-    type: "input",
-    message: "Would you like to include any credits?",
-    name: "credits",
-  },
-  {
-    type: "input",
-    message: "What license would you like to use/list?",
-    name: "license",
-  },
-];
+const teamMembers = [];
+
+const addManager = () => {
+    return inquirer.prompt ([
+       {
+        type: 'input',
+        name: 'name',
+        message: 'Add manager name.',
+       }
+        {
+        type: 'input',
+        name: 'id',
+        message: 'Add manager\'s ID.',
+       }
+         {
+        type: 'input',
+        name: 'email',
+        message: 'Add manager\'s email.',
+       }
+         {
+        type: 'input',
+        name: 'officeNum',
+        message: 'Add manager\'s office number.',
+       }
+    ])
+
+   .then(managerInput => {
+        const  { name, id, email, officeNum } = managerInput; 
+        const manager = new Manager (name, id, email, officeNum);
+
+        teamArray.push(manager); 
+        console.log(manager); 
+    })
+};
+
 
 function writeToFile(fileName, data) {
   return fs.writeFileSync(fileName, data);
@@ -44,7 +48,7 @@ function init() {
     .prompt(questions)
 
     .then((responses) =>
-      writeToFile("./README1.md", generateMarkdown(responses))
+      writeToFile("./index.html", generateMarkdown(responses))
     )
     .catch((err) => console.log("An error ocurred", err));
 }
