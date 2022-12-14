@@ -1,99 +1,77 @@
-const generateHTML = require("./src/generateHTML");
-
 const inquirer = require("inquirer");
 const fs = require("fs");
+const { resolve } = require("path");
 
-const teamMembers = [];
-
-const addManager = () => {
-  return inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "name",
-        message: "Add manager name.",
-      },
-      {
-        type: "input",
-        name: "id",
-        message: "Add manager's ID.",
-      },
-      {
-        type: "input",
-        name: "email",
-        message: "Add manager's email.",
-      },
-      {
-        type: "input",
-        name: "officeNum",
-        message: "Add manager's office number.",
-      },
-    ])
-
-    .then((managerInput) => {
-      const { name, id, email, officeNum } = managerInput;
-      const manager = new Manager(name, id, email, officeNum);
-
-      teamArray.push(manager);
-      console.log(manager);
-    });
-};
-
-const addEmployee = () => {
-    return inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "position",
-        message: "Choose the employee's position.",
-        choices: ['Engineer', 'Intern']
-      },
-       {
-        type: "input",
-        name: "name",
-        message: "Add employee's name.",
-      },
-         {
-        type: "input",
-        name: "id",
-        message: "Add employee's ID.",
-      },
-      {
-        type: "input",
-        name: "email",
-        message: "Add employee's email.",
-      },
-        {
-        type: "input",
-        name: "github",
-        message: "Add employee's github username.",
-      },
-      {
-        type: "input",
-        name: "school",
-        message: "Add intern's school.",
-      },
-      
-}
-
-
-
-
-
-
-function writeToFile(fileName, data) {
-  return fs.writeFileSync(fileName, data);
-}
+const employees = [];
 
 function init() {
-  inquirer
-    .prompt(questions)
-
-    .then((responses) =>
-      writeToFile("./index.html", generateMarkdown(responses))
-    )
-    .catch((err) => console.log("An error ocurred", err));
+  createTeam();
 }
 
-// Function call to initialize app
+function createTeam() {
+  inquirer
+    .prompt([
+      {
+        message: "Add employee's name",
+        name: "name",
+      },
+      {
+        type: "list",
+        message: "Choose employee's role",
+        choices: ["engineer", "intern", "manager"],
+        name: "role",
+      },
+      {
+        message: "enter team member id",
+        name: "id",
+      },
+      {
+        message: "Add team member's email address",
+        name: "email",
+      },
+    ])
+    .then(function ({ name, role, id, email }) {
+      let roleInfo = "";
+      if (role === "engineer") {
+        roleInfo = "github username";
+      } else if (role === "intern") {
+        roleInfo = "school name";
+      } else {
+        roleInfo = "Office number";
+      }
+      inquirer
+        .prompt([
+          {
+            message: `enter team member's ${roleInfo}`,
+            name: "roleInfo",
+          },
+          {
+            type: "list",
+            message: "would you like to add more team members?",
+            choices: ["yes", "no"],
+            name: "moremembers",
+          },
+        ])
+
+        .then(function ({ roleInfo, moreMembers }) {
+          let newMember;
+          if (role === "engineer") {
+            newMember = new engineer(name, id, email, roleInfo);
+          } else if (role === "intern") {
+            newMember = new intern(name, id, email, roleInfo);
+          } else {
+            newMember = new manager(name, id, email, roleInfo);
+          }
+          employees.push(newMember);
+          addHtml(newMember).then(function () {
+            if (moreMembers === "yes") {
+              addMember();
+            } else {
+              finishHtml();
+            }
+          });
+        });
+    });
+}
+
 init();
