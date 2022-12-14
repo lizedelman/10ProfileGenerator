@@ -2,6 +2,32 @@ const inquirer = require("inquirer");
 const fs = require("fs");
 const { resolve } = require("path");
 
+class Engineer {
+  constructor(name, id, email, roleInfo) {
+    this.name = name;
+    this.id = id;
+    this.email = email;
+    this.roleInfo = roleInfo;
+  }
+}
+class Intern {
+  constructor(name, id, email, roleInfo) {
+    this.name = name;
+    this.id = id;
+    this.email = email;
+    this.roleInfo = roleInfo;
+  }
+}
+
+class Manager {
+  constructor(name, id, email, roleInfo) {
+    this.name = name;
+    this.id = id;
+    this.email = email;
+    this.roleInfo = roleInfo;
+  }
+}
+
 const employees = [];
 
 function init() {
@@ -37,7 +63,7 @@ function createTeam() {
       } else if (role === "intern") {
         roleInfo = "school name";
       } else {
-        roleInfo = "Office number";
+        roleInfo = "office number";
       }
       inquirer
         .prompt([
@@ -49,18 +75,17 @@ function createTeam() {
             type: "list",
             message: "would you like to add more team members?",
             choices: ["yes", "no"],
-            name: "moremembers",
+            name: "moreMembers",
           },
         ])
-
         .then(function ({ roleInfo, moreMembers }) {
           let newMember;
           if (role === "engineer") {
-            newMember = new engineer(name, id, email, roleInfo);
+            newMember = new Engineer(name, id, email, roleInfo);
           } else if (role === "intern") {
-            newMember = new intern(name, id, email, roleInfo);
+            newMember = new Intern(name, id, email, roleInfo);
           } else {
-            newMember = new manager(name, id, email, roleInfo);
+            newMember = new Manager(name, id, email, roleInfo);
           }
           employees.push(newMember);
           addHtml(newMember).then(function () {
