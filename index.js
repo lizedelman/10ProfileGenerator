@@ -3,7 +3,7 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const fs = require("fs");
-const genTeam = require("./src/htmltemplate.js");
+const generateTeam = require("./src/htmltemplate.js");
 
 const employees = [];
 
@@ -75,7 +75,7 @@ function createTeam() {
 }
 
 function createHTML() {
-  fs.writeFileSync("./dist/team.html", genTeam(employees), "UTF-8");
+  fs.writeFileSync("./dist/team.html", generateTeam(employees), "UTF-8");
 }
 
 init();
