@@ -3,6 +3,7 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const fs = require("fs");
+const genTeam = require("./src/htmltemplate.js");
 
 const employees = [];
 
@@ -64,15 +65,17 @@ function createTeam() {
             newMember = new Manager(name, id, email, roleInfo);
           }
           employees.push(newMember);
-          addHtml(newMember).then(function () {
-            if (addMore === "yes") {
-              addMember();
-            } else {
-              finishHtml();
-            }
-          });
+          if (addMore === "yes") {
+            createTeam();
+          } else {
+            createHTML();
+          }
         });
     });
+}
+
+function createHTML() {
+  fs.writeFileSync("./dist/team.html", genTeam(employees), "UTF-8");
 }
 
 init();
