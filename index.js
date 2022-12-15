@@ -3,7 +3,6 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const fs = require("fs");
-const { resolve } = require("path");
 
 const employees = [];
 
@@ -21,7 +20,7 @@ function createTeam() {
       {
         type: "list",
         message: "Choose employee's role",
-        choices: ["engineer", "intern", "manager"],
+        choices: ["Engineer", "Intern", "Manager"],
         name: "role",
       },
       {
@@ -35,9 +34,9 @@ function createTeam() {
     ])
     .then(function ({ name, role, id, email }) {
       let roleInfo = "";
-      if (role === "engineer") {
-        roleInfo = "github username";
-      } else if (role === "intern") {
+      if (role === "Engineer") {
+        roleInfo = "GitHub username";
+      } else if (role === "Intern") {
         roleInfo = "school name";
       } else {
         roleInfo = "office number";
@@ -52,21 +51,21 @@ function createTeam() {
             type: "list",
             message: "would you like to add more team members?",
             choices: ["yes", "no"],
-            name: "moreMembers",
+            name: "addMore",
           },
         ])
-        .then(function ({ roleInfo, moreMembers }) {
+        .then(function ({ roleInfo, addMore }) {
           let newMember;
-          if (role === "engineer") {
+          if (role === "Engineer") {
             newMember = new Engineer(name, id, email, roleInfo);
-          } else if (role === "intern") {
+          } else if (role === "Intern") {
             newMember = new Intern(name, id, email, roleInfo);
           } else {
             newMember = new Manager(name, id, email, roleInfo);
           }
           employees.push(newMember);
           addHtml(newMember).then(function () {
-            if (moreMembers === "yes") {
+            if (addMore === "yes") {
               addMember();
             } else {
               finishHtml();
