@@ -25,7 +25,7 @@ function createTeam() {
         name: "role",
       },
       {
-        message: "enter team member id",
+        message: "Enter team member id",
         name: "id",
       },
       {
@@ -45,12 +45,12 @@ function createTeam() {
       inquirer
         .prompt([
           {
-            message: `enter team member's ${roleInfo}`,
+            message: `Enter team member's ${roleInfo}`,
             name: "roleInfo",
           },
           {
             type: "list",
-            message: "would you like to add more team members?",
+            message: "Would you like to add more team members?",
             choices: ["yes", "no"],
             name: "addMore",
           },
